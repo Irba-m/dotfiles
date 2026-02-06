@@ -1,0 +1,93 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 2,
+  "final_space": true,
+  "console_title_template": "{{ .Shell }} in {{ .Folder }}",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "session",
+          "style": "plain",
+          "foreground": "default",
+          "template": "{{ .UserName }}@{{ .HostName }} "
+        },
+        {
+          "type": "path",
+          "style": "plain",
+          "foreground": "cyan",
+          "properties": {
+            "style": "full"
+          },
+          "template": "{{ .Path }} "
+        },
+        {
+          "type": "git",
+          "style": "plain",
+          "foreground": "#F1502F",
+          "properties": {
+            "fetch_status": true,
+            "branch_icon": "",
+            "branch_ahead_icon": "↑",
+            "branch_behind_icon": "↓"
+          },
+          "template": ":: {{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }} "
+        },
+        {
+          "type": "node",
+          "style": "plain",
+          "foreground": "#6CA35E",
+          "template": "| \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} "
+        },
+        {
+          "type": "python",
+          "style": "plain",
+          "foreground": "#4584b6",
+          "properties": {
+            "display_mode": "context",
+            "fetch_virtual_env": true
+          },
+          "template": "| \ue235 {{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }} "
+        },
+        {
+          "type": "go",
+          "style": "plain",
+          "foreground": "#00ADD8",
+          "template": "| \ue626 {{ .Full }} "
+        },
+        {
+          "type": "executiontime",
+          "style": "plain",
+          "foreground": "default",
+          "properties": {
+            "threshold": 0,
+            "style": "round"
+          },
+          "template": "{{ .FormattedMs }}"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "status",
+          "style": "plain",
+          "foreground": "lightGreen",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}red{{ end }}"
+          ],
+          "properties": {
+            "always_enabled": true
+          },
+          "template": "$"
+        }
+      ]
+    }
+  ]
+}
