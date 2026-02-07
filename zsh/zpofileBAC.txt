@@ -1,0 +1,17 @@
+# ~/.zprofile
+
+# PATH tambahan
+[ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
+[ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
+
+# Rust / Cargo
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+# env global
+# export EDITOR=nano
+
+# ===== NeoVim =====
+[ -d "/opt/nvim-linux-x86_64/bin" ] && export PATH="/opt/nvim-linux-x86_64/bin:$PATH"
+
+
+

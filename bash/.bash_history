@@ -161,3 +161,7 @@ zsh
 chsh -s /usr/bin/zsh
 clear
 zsh
+clear
+zsh
+clear
+zsh
