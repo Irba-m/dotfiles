@@ -43,4 +43,7 @@ stow zsh starship ghostty git niri
 
 ---
 
+git clone https://github.com/Irba-m/dotfiles.git
+
 > Clone repo ini ke `~` lalu jalankan `stow .` untuk install semuanya sekaligus.
+
