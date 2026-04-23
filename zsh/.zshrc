@@ -61,7 +61,7 @@ alias nano="fresh"
 
 alias copy="wl-copy"
 
-alias git-push-dotfiles="git add . && git commit -m "initial commit" && git push -u origin main"
+alias git-push-dotfiles='git add . && git commit -m "initial commit" && git push -u origin main'
 
 alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
 
