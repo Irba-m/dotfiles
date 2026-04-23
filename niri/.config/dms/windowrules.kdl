@@ -1,0 +1,13 @@
+// DMS Window Rules - Managed by DankMaterialShell
+// Do not edit manually - changes may be overwritten
+
+// @id=wr_1776562783461337442 @name=Nautilus Not Floating
+window-rule {
+    match app-id="^org.gnome.Nautilus$"
+}
+
+// @id=wr_1776564353288927634 @name=PIP Floating
+window-rule {
+    match app-id="^Picture in picture$"
+    open-floating true
+}
