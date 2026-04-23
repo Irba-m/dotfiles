@@ -1,24 +1,46 @@
-Installing Stow
+# Dotfiles
 
-Arch
-'sudo pacman -S stow'
+Managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-Fedora
-'sudo dnf install stow'
+## Install Stow
 
-Ubuntu
-'sudo apt install stow'
+```bash
+sudo pacman -S stow   # Arch
+sudo dnf install stow # Fedora
+sudo apt install stow # Ubuntu
+```
 
+## Usage
 
-Usage
-Stow/Install a Package: 'stow <package_name>'
-Creates symlinks in the parent directory for files in the <package_name> folder
+```bash
+stow <package>    # install
+stow -D <package> # uninstall
+stow -n <package> # dry run
+stow .            # install all
+```
 
-Unstow/Delete a Package: stow -D <package_name>
-Removes the symlinks associated with the package.
+---
 
-Stow All: stow .
-Stows all directories within the current folder.
+## Packages
 
-Simulate (Dry Run): stow -n <package_name>
-Shows what the command would do without actually creating links.
+| Package | Arch | Fedora | Ubuntu |
+|---------|------|--------|--------|
+| zsh | `sudo pacman -S zsh` | `sudo dnf install zsh` | `sudo apt install zsh` |
+| git | `sudo pacman -S git` | `sudo dnf install git` | `sudo apt install git` |
+| ghostty | `sudo pacman -S ghostty` | `sudo dnf install ghostty` | `sudo apt install ghostty` |
+| niri | `sudo pacman -S niri` | `sudo dnf install niri` | `sudo apt install niri` |
+| starship | `curl -sS https://starship.rs/install.sh \| sh` | ← same | ← same |
+
+After install, set zsh as default shell:
+```bash
+chsh -s $(which zsh)
+```
+
+Then stow everything:
+```bash
+stow zsh starship ghostty git niri
+```
+
+---
+
+> Clone repo ini ke `~` lalu jalankan `stow .` untuk install semuanya sekaligus.
