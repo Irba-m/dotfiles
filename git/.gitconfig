@@ -3,3 +3,6 @@
 	email = muhammadirbadl07@gmail.com
 [init]
 	defaultBranch = main
+[http]
+	sslBackend = openssl
+	version = HTTP/1.1

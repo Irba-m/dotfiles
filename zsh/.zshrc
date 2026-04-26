@@ -66,9 +66,15 @@ alias git-push-dotfiles='git add . && git commit -m "commit" && git push -u orig
 alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
 
 
+alias mount-hdd1='sudo mount -t ntfs-3g UUID=0DBFA2872DB58FD0 /mnt/hdd1 -o uid=1000,gid=1000,windows_names'
+alias mount-hdd2='sudo mount -t ntfs-3g UUID=C84CFB934CFB7A90 /mnt/hdd2 -o uid=1000,gid=1000,windows_names'
+
+
+
 eval "$(starship init zsh)"
 
 # eval "$(zoxide init zsh)"
 
 
 export PATH=$PATH:/home/irba/.spicetify
+fastfetch
