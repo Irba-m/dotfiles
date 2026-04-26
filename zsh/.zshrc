@@ -61,15 +61,6 @@ alias nano="fresh"
 
 alias copy="wl-copy"
 
-
-alias git-push-dotfiles='cd /home/dotfiles && git add . && git commit -m "commit" && git push -u origin main'
-
-alias git-push-obsidian='cd ~/Documents/obsidianVault/myVault && git add . && git commit -m "commit" && git push -u origin main'
-
-alias git-push-backup='cd /home/irba/backup-git && git add . && git commit -m "commit" && git push -u origin main'
-
-
-
 alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
 
 

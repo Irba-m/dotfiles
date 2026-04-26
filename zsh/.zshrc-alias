@@ -1,0 +1,64 @@
+# Git push helper function
+_git_push_repo() {
+    local label="$1"
+    local dir="$2"
+
+    cd "$dir" || { echo "❌ Gagal masuk ke $dir"; return 1; }
+
+    echo ""
+    echo "📁 Repo   : $label"
+    echo "📂 Dir    : $(pwd)"
+    echo ""
+
+    git status --short
+
+    echo ""
+    echo -n "❓ Lanjut git add & commit? [Y/n] "
+    read -r confirm
+    [[ "$confirm" =~ ^[Nn]$ ]] && { echo "⛔ Dibatalkan."; return 0; }
+
+    echo ""
+    echo -n "📝 Commit message [default: 'commit']: "
+    read -r msg
+    msg="${msg:-commit}"
+
+    git add .
+    git commit -m "$msg"
+
+    echo ""
+    echo -n "🚀 Lanjut git push? [Y/n] "
+    read -r push_confirm
+    [[ "$push_confirm" =~ ^[Nn]$ ]] && { echo "⛔ Push dibatalkan."; return 0; }
+
+    git push -u origin main
+    echo ""
+    echo "✅ Selesai push $label!"
+}
+
+alias git-push-dotfiles='_git_push_repo "Dotfiles" "/home/irba/dotfiles"'
+alias git-push-obsidian='_git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault"'
+alias git-push-backup='_git_push_repo "Backup" "/home/irba/backup-git"'
+
+# Menu picker
+gitp() {
+    echo ""
+    echo "🗂  Pilih repo yang mau di-push:"
+    echo "  1) All"
+    echo "  2) Dotfiles"
+    echo "  3) Obsidian Vault"
+    echo "  4) Backup"
+    echo ""
+    echo -n "Pilihan [1/2/3/4]: "
+    read -r choice
+    case "$choice" in
+        1)
+            _git_push_repo "Dotfiles"       "/home/irba/dotfiles"
+            _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault"
+            _git_push_repo "Backup"         "/home/irba/backup-git"
+            ;;
+        2) _git_push_repo "Dotfiles"       "/home/irba/dotfiles" ;;
+        3) _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault" ;;
+        4) _git_push_repo "Backup"         "/home/irba/backup-git" ;;
+        *) echo "❌ Pilihan tidak valid." ;;
+    esac
+}
