@@ -1,3 +1,5 @@
+# source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
 export ZSH="$HOME/.oh-my-zsh"
 
 export EDITOR=gnome-text-editor
@@ -7,6 +9,7 @@ plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
+  # zsh-autocomplete
   # colorize
 )
 
