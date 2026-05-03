@@ -55,6 +55,8 @@ alias dcl='docker compose logs -f'
 alias dps='docker ps'
 
 alias cdarr='cd /mnt/hdd1/data'
+alias cdmich='cd /home/irba/server/immich'
+
 
 alias wcc="warp-cli connect"
 alias wcd="warp-cli disconnect"
@@ -69,6 +71,30 @@ alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
 
 alias mount-hdd1='sudo mount -t ntfs-3g UUID=0DBFA2872DB58FD0 /mnt/hdd1 -o uid=1000,gid=1000,windows_names'
 alias mount-hdd2='sudo mount -t ntfs-3g UUID=C84CFB934CFB7A90 /mnt/hdd2 -o uid=1000,gid=1000,windows_names'
+
+
+mnt-cdarr() {
+  mount-hdd1 2>/dev/null
+  cdarr
+}
+
+
+syu() {
+  sudo snapper create --description "pre pacman -Syu" &&
+  sudo pacman -Syu
+}
+
+snap() {
+  local desc="${1:-manual snapshot}"
+  local time
+  time=$(date +"%H:%M:%S")
+
+  if sudo snapper create --description "$desc"; then
+    echo "✅ [$time] Snapshot created successfully: $desc"
+  else
+    echo "❌ [$time] Snapshot creation failed"
+  fi
+}
 
 
 
