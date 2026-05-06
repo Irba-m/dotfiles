@@ -1,64 +1,222 @@
-# Git push helper function
-_git_push_repo() {
-    local label="$1"
-    local dir="$2"
+# ─────────────────────────────────────────────
+#  UMUM
+# ─────────────────────────────────────────────
+alias c='clear'
+alias q='exit'
+alias ls='eza --icons'
+alias tree='eza --tree --icons'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias nano='fresh'
+alias copy='wl-copy'
+alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
 
-    cd "$dir" || { echo "❌ Gagal masuk ke $dir"; return 1; }
 
-    echo ""
-    echo "📁 Repo   : $label"
-    echo "📂 Dir    : $(pwd)"
-    echo ""
+# ─────────────────────────────────────────────
+#  DOCKER
+# ─────────────────────────────────────────────
+alias d='docker'
+alias dc='docker compose'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+alias dcl='docker compose logs -f'
+alias dps='docker ps'
 
-    git status --short
 
-    echo ""
-    echo -n "❓ Lanjut git add & commit? [Y/n] "
-    read -r confirm
-    [[ "$confirm" =~ ^[Nn]$ ]] && { echo "⛔ Dibatalkan."; return 0; }
+# ─────────────────────────────────────────────
+#  MOUNT & NAVIGASI
+# ─────────────────────────────────────────────
+alias mount-hdd1='sudo mount -t ntfs-3g UUID=0DBFA2872DB58FD0 /mnt/hdd1 -o uid=1000,gid=1000,windows_names'
+alias mount-hdd2='sudo mount -t ntfs-3g UUID=C84CFB934CFB7A90 /mnt/hdd2 -o uid=1000,gid=1000,windows_names'
+alias cdarr='cd /mnt/hdd1/data'
+alias cdmich='cd /home/irba/server/immich'
 
-    echo ""
-    echo -n "📝 Commit message [default: 'commit']: "
-    read -r msg
-    msg="${msg:-commit}"
-
-    git add .
-    git commit -m "$msg"
-
-    echo ""
-    echo -n "🚀 Lanjut git push? [Y/n] "
-    read -r push_confirm
-    [[ "$push_confirm" =~ ^[Nn]$ ]] && { echo "⛔ Push dibatalkan."; return 0; }
-
-    git push -u origin main
-    echo ""
-    echo "✅ Selesai push $label!"
+mnt-cdarr() {
+  mount-hdd1 2>/dev/null
+  cdarr
 }
 
-alias git-push-dotfiles='_git_push_repo "Dotfiles" "/home/irba/dotfiles"'
-alias git-push-obsidian='_git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault"'
-alias git-push-backup='_git_push_repo "Backup" "/home/irba/backup-git"'
 
-# Menu picker
+# ─────────────────────────────────────────────
+#  WARP VPN
+# ─────────────────────────────────────────────
+alias wcc='warp-cli connect'
+alias wcd='warp-cli disconnect'
+alias wcs='warp-cli status'
+
+
+# ─────────────────────────────────────────────
+#  IMMICH
+# ─────────────────────────────────────────────
+immich-sync() {
+  local SRC="/home/irba/server/immich/images/library/admin"
+  local DEST="/home/irba/Pictures/phone-photos"
+  local SS="$DEST/screenshot"
+
+  mkdir -p "$DEST" "$SS"
+
+  echo "🔄 Syncing photos..."
+  find "$SRC" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) \
+    -exec ln -s {} "$DEST"/ 2>/dev/null \;
+
+  echo "🧹 Sorting screenshots..."
+  find "$DEST" -type l -iname "*screenshot*" \
+    -exec mv -t "$SS" {} + 2>/dev/null
+
+  echo "✅ Done!"
+}
+
+
+# ─────────────────────────────────────────────
+#  SISTEM & SNAPSHOT
+# ─────────────────────────────────────────────
+syu() {
+  sudo snapper create --description "pre pacman -Syu" &&
+  sudo pacman -Syu
+}
+
+snap() {
+  local desc="${1:-manual snapshot}"
+  local time
+  time=$(date +"%H:%M:%S")
+
+  if sudo snapper create --description "$desc"; then
+    echo "✅ [$time] Snapshot created successfully: $desc"
+  else
+    echo "❌ [$time] Snapshot creation failed"
+  fi
+}
+
+
+# ─────────────────────────────────────────────
+#  GIT PUSH
+# ─────────────────────────────────────────────
+_git_push_repo() {
+  local label="$1"
+  local dir="$2"
+
+  cd "$dir" || { echo "❌ Gagal masuk ke $dir"; return 1; }
+
+  echo ""
+  echo "📁 Repo   : $label"
+  echo "📂 Dir    : $(pwd)"
+  echo ""
+  git status --short
+
+  echo ""
+  echo -n "❓ Lanjut git add & commit? [Y/n] "
+  read -r confirm
+  [[ "$confirm" =~ ^[Nn]$ ]] && { echo "⛔ Dibatalkan."; return 0; }
+
+  echo ""
+  echo -n "📝 Commit message [default: 'commit']: "
+  read -r msg
+  msg="${msg:-commit}"
+
+  git add .
+  git commit -m "$msg"
+
+  echo ""
+  echo -n "🚀 Lanjut git push? [Y/n] "
+  read -r push_confirm
+  [[ "$push_confirm" =~ ^[Nn]$ ]] && { echo "⛔ Push dibatalkan."; return 0; }
+
+  git push -u origin main
+  echo ""
+  echo "✅ Selesai push $label!"
+}
+
+alias git-push-dotfiles='_git_push_repo "Dotfiles"       "/home/irba/dotfiles"'
+alias git-push-obsidian='_git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault"'
+alias git-push-backup='_git_push_repo  "Backup"          "/home/irba/backup-git"'
+
 gitp() {
-    echo ""
-    echo "🗂  Pilih repo yang mau di-push:"
-    echo "  1) All"
-    echo "  2) Dotfiles"
-    echo "  3) Obsidian Vault"
-    echo "  4) Backup"
-    echo ""
-    echo -n "Pilihan [1/2/3/4]: "
-    read -r choice
-    case "$choice" in
-        1)
-            _git_push_repo "Dotfiles"       "/home/irba/dotfiles"
-            _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault"
-            _git_push_repo "Backup"         "/home/irba/backup-git"
-            ;;
-        2) _git_push_repo "Dotfiles"       "/home/irba/dotfiles" ;;
-        3) _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault" ;;
-        4) _git_push_repo "Backup"         "/home/irba/backup-git" ;;
-        *) echo "❌ Pilihan tidak valid." ;;
-    esac
+  echo ""
+  echo "🗂  Pilih repo yang mau di-push:"
+  echo "  1) All"
+  echo "  2) Dotfiles"
+  echo "  3) Obsidian Vault"
+  echo "  4) Backup"
+  echo ""
+  echo -n "Pilihan [1/2/3/4]: "
+  read -r choice
+
+  case "$choice" in
+    1)
+      _git_push_repo "Dotfiles"       "/home/irba/dotfiles"
+      _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault"
+      _git_push_repo "Backup"         "/home/irba/backup-git"
+      ;;
+    2) _git_push_repo "Dotfiles"       "/home/irba/dotfiles" ;;
+    3) _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault" ;;
+    4) _git_push_repo "Backup"         "/home/irba/backup-git" ;;
+    *) echo "❌ Pilihan tidak valid." ;;
+  esac
+}
+
+
+# ─────────────────────────────────────────────
+#  HELP — my-alias
+# ─────────────────────────────────────────────
+my-alias() {
+  echo ""
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "            📋 DAFTAR ALIAS & FUNGSI"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+  echo ""
+  echo "🔧 UMUM"
+  echo "  c               → clear terminal"
+  echo "  q               → exit terminal"
+  echo "  ls              → eza dengan icons"
+  echo "  tree            → eza tree view dengan icons"
+  echo "  rm / cp / mv    → dengan konfirmasi interaktif (-i)"
+  echo "  nano            → fresh (editor pengganti nano)"
+  echo "  copy            → wl-copy (clipboard Wayland)"
+  echo "  zshrc           → buka file .zshrc di editor"
+
+  echo ""
+  echo "🐳 DOCKER"
+  echo "  d               → docker"
+  echo "  dc              → docker compose"
+  echo "  dcu             → docker compose up -d"
+  echo "  dcd             → docker compose down"
+  echo "  dcl             → docker compose logs -f"
+  echo "  dps             → docker ps"
+
+  echo ""
+  echo "💾 MOUNT & NAVIGASI"
+  echo "  mount-hdd1      → mount HDD1 (NTFS, UUID=0DBF...)"
+  echo "  mount-hdd2      → mount HDD2 (NTFS, UUID=C84C...)"
+  echo "  cdarr           → cd ke /mnt/hdd1/data"
+  echo "  cdmich          → cd ke /home/irba/server/immich"
+  echo "  mnt-cdarr       → mount HDD1 lalu langsung cd ke sana"
+
+  echo ""
+  echo "🌐 WARP VPN"
+  echo "  wcc             → warp-cli connect"
+  echo "  wcd             → warp-cli disconnect"
+  echo "  wcs             → warp-cli status"
+
+  echo ""
+  echo "📸 IMMICH"
+  echo "  immich-sync     → sync foto dari immich ke ~/Pictures/phone-photos"
+  echo "                    + auto sortir screenshot ke subfolder"
+
+  echo ""
+  echo "📦 SISTEM & SNAPSHOT"
+  echo "  syu             → snapshot snapper dulu, lalu pacman -Syu"
+  echo "  snap [desc]     → buat snapshot manual (default: 'manual snapshot')"
+
+  echo ""
+  echo "🚀 GIT PUSH"
+  echo "  gitp                → menu interaktif pilih repo yang mau di-push"
+  echo "  git-push-dotfiles   → push repo Dotfiles"
+  echo "  git-push-obsidian   → push repo Obsidian Vault"
+  echo "  git-push-backup     → push repo Backup"
+
+  echo ""
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo ""
 }
