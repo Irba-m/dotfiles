@@ -95,6 +95,7 @@ snap() {
 _git_push_repo() {
   local label="$1"
   local dir="$2"
+  local auto="${3:-no}"   # "auto" = skip semua konfirmasi
 
   cd "$dir" || { echo "❌ Gagal masuk ke $dir"; return 1; }
 
@@ -104,23 +105,32 @@ _git_push_repo() {
   echo ""
   git status --short
 
-  echo ""
-  echo -n "❓ Lanjut git add & commit? [Y/n] "
-  read -r confirm
-  [[ "$confirm" =~ ^[Nn]$ ]] && { echo "⛔ Dibatalkan."; return 0; }
+  if [[ "$auto" != "auto" ]]; then
+    echo ""
+    echo -n "❓ Lanjut git add & commit? [Y/n] "
+    read -r confirm
+    [[ "$confirm" =~ ^[Nn]$ ]] && { echo "⛔ Dibatalkan."; return 0; }
+  fi
 
   echo ""
   echo -n "📝 Commit message [default: 'commit']: "
-  read -r msg
-  msg="${msg:-commit}"
+  if [[ "$auto" == "auto" ]]; then
+    msg="commit"
+    echo "$msg (auto)"
+  else
+    read -r msg
+    msg="${msg:-commit}"
+  fi
 
   git add .
   git commit -m "$msg"
 
-  echo ""
-  echo -n "🚀 Lanjut git push? [Y/n] "
-  read -r push_confirm
-  [[ "$push_confirm" =~ ^[Nn]$ ]] && { echo "⛔ Push dibatalkan."; return 0; }
+  if [[ "$auto" != "auto" ]]; then
+    echo ""
+    echo -n "🚀 Lanjut git push? [Y/n] "
+    read -r push_confirm
+    [[ "$push_confirm" =~ ^[Nn]$ ]] && { echo "⛔ Push dibatalkan."; return 0; }
+  fi
 
   git push -u origin main
   echo ""
@@ -134,12 +144,13 @@ alias git-push-backup='_git_push_repo  "Backup"          "/home/irba/backup-git"
 gitp() {
   echo ""
   echo "🗂  Pilih repo yang mau di-push:"
-  echo "  1) All"
-  echo "  2) Dotfiles"
-  echo "  3) Obsidian Vault"
-  echo "  4) Backup"
+  echo "  1) All  (dengan konfirmasi)"
+  echo "  2) All  (langsung push, tanpa konfirmasi)"
+  echo "  3) Dotfiles"
+  echo "  4) Obsidian Vault"
+  echo "  5) Backup"
   echo ""
-  echo -n "Pilihan [1/2/3/4]: "
+  echo -n "Pilihan [1-5]: "
   read -r choice
 
   case "$choice" in
@@ -148,9 +159,14 @@ gitp() {
       _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault"
       _git_push_repo "Backup"         "/home/irba/backup-git"
       ;;
-    2) _git_push_repo "Dotfiles"       "/home/irba/dotfiles" ;;
-    3) _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault" ;;
-    4) _git_push_repo "Backup"         "/home/irba/backup-git" ;;
+    2)
+      _git_push_repo "Dotfiles"       "/home/irba/dotfiles"                          auto
+      _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault"   auto
+      _git_push_repo "Backup"         "/home/irba/backup-git"                        auto
+      ;;
+    3) _git_push_repo "Dotfiles"       "/home/irba/dotfiles" ;;
+    4) _git_push_repo "Obsidian Vault" "/home/irba/Documents/obsidianVault/myVault" ;;
+    5) _git_push_repo "Backup"         "/home/irba/backup-git" ;;
     *) echo "❌ Pilihan tidak valid." ;;
   esac
 }
