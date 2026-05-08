@@ -11,6 +11,7 @@ alias mv='mv -i'
 alias nano='fresh'
 alias copy='wl-copy'
 alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
+alias zshrc-alias='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc-alias'
 
 
 # ─────────────────────────────────────────────
