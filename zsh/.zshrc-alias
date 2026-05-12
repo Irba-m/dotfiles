@@ -5,7 +5,7 @@ alias c='clear'
 alias q='exit'
 alias ls='eza --icons'
 alias tree='eza --tree --icons'
-alias rm='rm -i'
+alias rm='rm -i --preserve-root'
 alias cp='cp -i'
 alias mv='mv -i'
 alias nano='fresh'
@@ -28,7 +28,7 @@ alias dps='docker ps'
 # ─────────────────────────────────────────────
 #  MOUNT & NAVIGASI
 # ─────────────────────────────────────────────
-alias mount-hdd1='sudo mount -t ntfs-3g UUID=0DBFA2872DB58FD0 /mnt/hdd1 -o uid=1000,gid=1000,windows_names'
+alias mount-hdd1='sudo mount -t ext4 UUID=3c169c1a-3b2a-49fe-a281-31dc51dcb482 /mnt/hdd1'
 alias mount-hdd2='sudo mount -t ntfs-3g UUID=C84CFB934CFB7A90 /mnt/hdd2 -o uid=1000,gid=1000,windows_names'
 alias cdarr='cd /mnt/hdd1/data'
 alias cdmich='cd /home/irba/server/immich'
@@ -204,7 +204,7 @@ my-alias() {
 
   echo ""
   echo "💾 MOUNT & NAVIGASI"
-  echo "  mount-hdd1      → mount HDD1 (NTFS, UUID=0DBF...)"
+  echo "  mount-hdd1      → mount HDD1 (EXT4, UUID=3c16...)"
   echo "  mount-hdd2      → mount HDD2 (NTFS, UUID=C84C...)"
   echo "  cdarr           → cd ke /mnt/hdd1/data"
   echo "  cdmich          → cd ke /home/irba/server/immich"
