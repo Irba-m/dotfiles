@@ -25,6 +25,7 @@
 # ==========================
 # # The config file consists of simple key-value pairs,
 # # separated by equals signs.
+##font-family = monospace
 font-family = JetBrainsMonoNL Nerd Font Mono
 # window-padding-x = 2
 #

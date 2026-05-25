@@ -1,0 +1,7 @@
+recent-windows {
+    // Switcher muncul seketika tanpa delay
+    open-delay-ms 0
+
+    // Window langsung masuk daftar tanpa debounce
+    debounce-ms 0
+}

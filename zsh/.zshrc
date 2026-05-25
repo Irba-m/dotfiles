@@ -41,7 +41,13 @@ eval "$(starship init zsh)"
 
 
 export PATH=$PATH:/home/irba/.spicetify
-fastfetch
+
+# Splas Screen
+#fastfetch
+duf /mnt/hdd1 /mnt/hdd2 /
+fastfetch -c minimal.jsonc
+
 
 
 source /home/irba/.zshrc-alias
+#source /usr/share/nvm/init-nvm.sh

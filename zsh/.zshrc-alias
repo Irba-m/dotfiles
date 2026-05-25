@@ -29,7 +29,18 @@ alias dps='docker ps'
 #  MOUNT & NAVIGASI
 # ─────────────────────────────────────────────
 alias mount-hdd1='sudo mount -t ext4 UUID=3c169c1a-3b2a-49fe-a281-31dc51dcb482 /mnt/hdd1'
-alias mount-hdd2='sudo mount -t ntfs-3g UUID=C84CFB934CFB7A90 /mnt/hdd2 -o uid=1000,gid=1000,windows_names'
+alias mount-hdd2='sudo mount -t ext4 UUID=04e0012d-a77b-4511-945d-fabd0d8a22f6 /mnt/hdd2'
+
+# /dev/sda2
+alias mount-disk-d='sudo mount -t ntfs3 \
+-o rw,uid=1000,gid=1000,windows_names,noatime \
+UUID=40AA28F357FDB4AE /mnt/windows/disk-d'
+
+# /dev/sdc4
+alias mount-disk-c='sudo mount -t ntfs3 \
+-o rw,uid=1000,gid=1000,windows_names,noatime \
+UUID=D4B4B859B4B83FB2 /mnt/windows/disk-c'
+
 alias cdarr='cd /mnt/hdd1/data'
 alias cdmich='cd /home/irba/server/immich'
 
@@ -206,6 +217,8 @@ my-alias() {
   echo "💾 MOUNT & NAVIGASI"
   echo "  mount-hdd1      → mount HDD1 (EXT4, UUID=3c16...)"
   echo "  mount-hdd2      → mount HDD2 (NTFS, UUID=C84C...)"
+  echo "  mount-disk-c    → mount Disk C (NTFS, UUID=D4B4...)"
+  echo "  mount-disk-d    → mount Disk D (NTFS, UUID=40AA...)"
   echo "  cdarr           → cd ke /mnt/hdd1/data"
   echo "  cdmich          → cd ke /home/irba/server/immich"
   echo "  mnt-cdarr       → mount HDD1 lalu langsung cd ke sana"
