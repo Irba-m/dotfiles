@@ -1,1 +1,24 @@
-/etc/fstab
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a device; this may
+# be used with UUID= as a more robust way to name devices that works even if
+# disks are added and removed. See fstab(5).
+#
+# <file system>             <mount point>  <type>  <options>  <dump>  <pass>
+UUID=89DE-8DB0                            /boot          vfat    defaults,umask=0077 0 2
+UUID=8df0079e-24a9-4b66-937d-471bbac39555 /              btrfs   subvol=/@,defaults,noatime,compress=zstd 0 0
+UUID=8df0079e-24a9-4b66-937d-471bbac39555 /home          btrfs   subvol=/@home,defaults,noatime,compress=zstd 0 0
+UUID=8df0079e-24a9-4b66-937d-471bbac39555 /root          btrfs   subvol=/@root,defaults,noatime,compress=zstd 0 0
+UUID=8df0079e-24a9-4b66-937d-471bbac39555 /srv           btrfs   subvol=/@srv,defaults,noatime,compress=zstd 0 0
+UUID=8df0079e-24a9-4b66-937d-471bbac39555 /var/cache     btrfs   subvol=/@cache,defaults,noatime,compress=zstd 0 0
+UUID=8df0079e-24a9-4b66-937d-471bbac39555 /var/tmp       btrfs   subvol=/@tmp,defaults,noatime,compress=zstd 0 0
+UUID=8df0079e-24a9-4b66-937d-471bbac39555 /var/log       btrfs   subvol=/@log,defaults,noatime,compress=zstd 0 0
+tmpfs                                     /tmp           tmpfs   defaults,noatime,mode=1777 0 0
+
+
+# Auto Mount
+# UUID=3c169c1a-3b2a-49fe-a281-31dc51dcb482 /mnt/hdd1 ext4 defaults,rw,nofail,x-systemd.device-timeout=5 0 2
+UUID=3c169c1a-3b2a-49fe-a281-31dc51dcb482 /mnt/hdd1 ext4 defaults,rw 0 2
+
+# UUID=3cc65aca-1d8b-4793-8aa9-d3b602160e9b /mnt/hdd2 ext4 defaults,rw 0 2
+UUID=04e0012d-a77b-4511-945d-fabd0d8a22f6 /mnt/hdd2 ext4 defaults,rw,nofail,x-systemd.device-timeout=5 0 2
