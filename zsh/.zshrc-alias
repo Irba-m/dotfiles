@@ -183,6 +183,14 @@ gitp() {
   esac
 }
 
+# ─────────────────────────────────────────────
+#  HOME BACKUP
+# ─────────────────────────────────────────────
+
+alias backup-home='sudo ~/backup-git/tiered-backup.sh'
+alias backup-full='sudo ~/backup-git/tiered-backup.sh -f'
+alias backup-ph='sudo ~/backup-git/tiered-backup.sh -p'
+alias backup-dry='sudo ~/backup-git/tiered-backup.sh -d'
 
 # ─────────────────────────────────────────────
 #  HELP — my-alias
@@ -245,6 +253,13 @@ my-alias() {
   echo "  git-push-dotfiles   → push repo Dotfiles"
   echo "  git-push-obsidian   → push repo Obsidian Vault"
   echo "  git-push-backup     → push repo Backup"
+
+  echo ""
+  echo "📥 HOME BACKUP"
+  echo "  backup-home     → default — jalankan semua"
+  echo "  backup-full     → full backup + override saja"
+  echo "  backup-ph       → placeholder + cleanup saja"
+  echo "  backup-dry      → dry-run full backup"
 
   echo ""
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
