@@ -100,7 +100,7 @@
       "id": "brightnessSlider",
       "enabled": true,
       "width": 50,
-      "deviceName": "ddc:i2c-0"
+      "deviceName": "ddc:i2c-3"
     },
     {
       "id": "wifi",
@@ -501,10 +501,6 @@
         },
         {
           "id": "systemTray",
-          "enabled": true
-        },
-        {
-          "id": "dankDiskUsage",
           "enabled": true
         },
         {

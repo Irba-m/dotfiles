@@ -13,6 +13,8 @@ alias copy='wl-copy'
 alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
 alias zshrc-alias='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc-alias'
 
+alias win11='pkexec efibootmgr -n 0012 && reboot'
+
 
 # ─────────────────────────────────────────────
 #  DOCKER
@@ -49,6 +51,113 @@ mnt-cdarr() {
   cdarr
 }
 
+# ─────────────────────────────────────────────
+#  MONITOR BRIGHTNESS
+# ─────────────────────────────────────────────
+
+# ── Preset definitions ───────────────────────────────────────────────────────
+# Format: "Nama Preset:brightness:contrast"
+# Edit bagian ini untuk tambah/ubah preset
+_ddc_presets=(
+  "Normal:7:65"
+  "Dark:1:30"
+  "Rdark:1:1"
+)
+
+# ── Internals ────────────────────────────────────────────────────────────────
+_ddc_bar() {
+  local val=$1 filled=$(( $1 * 20 / 100 )) f="" e=""
+  for ((i=0; i<filled;        i++)); do f+="⣿"; done
+  for ((i=0; i<20-filled;     i++)); do e+="⣀"; done
+  printf '%s%s' "$f" "$e"
+}
+
+_ddc_get() {
+  ddcutil getvcp "$1" 2>/dev/null | grep -oP 'current value =\s*\K[0-9]+'
+}
+
+_ddc_apply() {
+  local code=$1 label=$2 val=$3 cur
+  cur=$(_ddc_get "$code")
+  ddcutil setvcp "$code" "$val"
+  printf '%-12s \033[2m%d\033[0m → \033[32m%d\033[0m  %s\n' \
+    "$label" "$cur" "$val" "$(_ddc_bar "$val")"
+}
+
+# ── Main ─────────────────────────────────────────────────────────────────────
+ddc() {
+  local code label val cur
+
+  case "$1" in
+
+    b|bright)
+      code=10 label="Brightness" val=$2
+      cur=$(_ddc_get "$code")
+      [[ -z "$val" ]] && { printf '%-12s \033[36m%d\033[0m  %s\n' "$label" "$cur" "$(_ddc_bar "$cur")"; return; }
+      (( val < 0 || val > 100 )) && { printf '\033[31m✗\033[0m nilai harus 0–100\n'; return 1; }
+      _ddc_apply "$code" "$label" "$val"
+      ;;
+
+    c|contrast)
+      code=12 label="Contrast" val=$2
+      cur=$(_ddc_get "$code")
+      [[ -z "$val" ]] && { printf '%-12s \033[36m%d\033[0m  %s\n' "$label" "$cur" "$(_ddc_bar "$cur")"; return; }
+      (( val < 0 || val > 100 )) && { printf '\033[31m✗\033[0m nilai harus 0–100\n'; return 1; }
+      _ddc_apply "$code" "$label" "$val"
+      ;;
+
+    s|status)
+      local b=$(_ddc_get 10) c=$(_ddc_get 12)
+      printf '%-12s \033[36m%d\033[0m  %s\n' "Brightness" "$b" "$(_ddc_bar "$b")"
+      printf '%-12s \033[36m%d\033[0m  %s\n' "Contrast"   "$c" "$(_ddc_bar "$c")"
+      ;;
+
+    p|preset)
+      case "$2" in
+        ls|list|"")
+          printf '\033[1mPreset tersedia:\033[0m\n'
+          local i=1
+          for p in "${_ddc_presets[@]}"; do
+            IFS=':' read -r name b c <<< "$p"
+            printf '  \033[36m%d\033[0m  %-22s  b=%-4s c=%s\n' "$i" "$name" "$b" "$c"
+            (( i++ ))
+          done
+          printf '\nGunakan: ddc p <nomor atau nama>\n'
+          ;;
+        *)
+          local query="${*:2}" matched=""
+          # coba match by nomor
+          if [[ "$query" =~ ^[0-9]+$ ]]; then
+            matched="${_ddc_presets[$query]}"
+          else
+            # match by nama (case-insensitive, zsh-compatible)
+            local ql; ql=$(echo "$query" | tr '[:upper:]' '[:lower:]')
+            for p in "${_ddc_presets[@]}"; do
+              local pl; pl=$(echo "$p" | tr '[:upper:]' '[:lower:]')
+              [[ "$pl" == *"$ql"* ]] && matched="$p" && break
+            done
+          fi
+          if [[ -z "$matched" ]]; then
+            printf '\033[31m✗\033[0m preset tidak ditemukan: %s\n' "$query"; return 1
+          fi
+          IFS=':' read -r name b c <<< "$matched"
+          printf '\033[1m%s\033[0m\n' "$name"
+          _ddc_apply 10 "Brightness" "$b"
+          _ddc_apply 12 "Contrast"   "$c"
+          ;;
+      esac
+      ;;
+
+    *)
+      printf '\033[1mUsage:\033[0m\n'
+      printf '  ddc b <0–100>     set brightness\n'
+      printf '  ddc c <0–100>     set contrast\n'
+      printf '  ddc s             status sekarang\n'
+      printf '  ddc p             list preset\n'
+      printf '  ddc p <n|nama>    apply preset\n'
+      ;;
+  esac
+}
 
 # ─────────────────────────────────────────────
 #  WARP VPN
@@ -211,6 +320,8 @@ my-alias() {
   echo "  nano            → fresh (editor pengganti nano)"
   echo "  copy            → wl-copy (clipboard Wayland)"
   echo "  zshrc           → buka file .zshrc di editor"
+  
+  echo "  win11           → boot ke windows 11"
 
   echo ""
   echo "🐳 DOCKER"
@@ -236,6 +347,12 @@ my-alias() {
   echo "  wcc             → warp-cli connect"
   echo "  wcd             → warp-cli disconnect"
   echo "  wcs             → warp-cli status"
+  
+  echo ""
+  echo "🖥️ MONITOR (DDCUTIL)"
+  echo "  ddc b <value>   → ddcutil set brightness value"
+  echo "  ddc c <value>   → ddcutil set contrast value"
+  echo "  ddc s           → ddcutil status"
 
   echo ""
   echo "📸 IMMICH"

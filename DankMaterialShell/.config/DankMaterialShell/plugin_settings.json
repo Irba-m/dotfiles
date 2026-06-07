@@ -5,5 +5,10 @@
   },
   "dankDiskUsage": {
     "enabled": false
+  },
+  "displayManager": {
+    "enabled": false,
+    "brightness_HDMI-A-1": 80.6017645474138,
+    "contrast_HDMI-A-1": 60.43069773706896
   }
 }
