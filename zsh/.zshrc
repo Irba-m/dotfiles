@@ -9,6 +9,7 @@ plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
+  web-search
   # zsh-autocomplete
   # colorize
 )
@@ -51,3 +52,10 @@ fastfetch -c minimal.jsonc
 
 source /home/irba/.zshrc-alias
 #source /usr/share/nvm/init-nvm.sh
+
+# bun completions
+[ -s "/home/irba/.bun/_bun" ] && source "/home/irba/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

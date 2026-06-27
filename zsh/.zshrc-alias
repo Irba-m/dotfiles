@@ -14,6 +14,7 @@ alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
 alias zshrc-alias='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc-alias'
 
 alias win11='pkexec efibootmgr -n 0012 && reboot'
+alias msleep='niri msg action power-off-monitors'
 
 
 # ─────────────────────────────────────────────
@@ -322,6 +323,8 @@ my-alias() {
   echo "  zshrc           → buka file .zshrc di editor"
   
   echo "  win11           → boot ke windows 11"
+  
+  echo "  msleep          → monitor force sleep"
 
   echo ""
   echo "🐳 DOCKER"
