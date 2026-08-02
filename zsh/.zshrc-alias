@@ -179,7 +179,7 @@ immich-sync() {
   mkdir -p "$DEST" "$SS"
 
   echo "🔄 Syncing photos..."
-  find "$SRC" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) \
+  find "$SRC" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.mp4" \) \
     -exec ln -s {} "$DEST"/ 2>/dev/null \;
 
   echo "🧹 Sorting screenshots..."
@@ -196,6 +196,12 @@ immich-sync() {
 syu() {
   sudo snapper create --description "pre pacman -Syu" &&
   sudo pacman -Syu
+}
+
+aur-syu() {
+  sudo snapper create --description "pre pacman Aur (yay/paru) -Syu" &&
+  yay -Syu
+  paru -Syu
 }
 
 snap() {
@@ -321,6 +327,8 @@ my-alias() {
   echo "  nano            → fresh (editor pengganti nano)"
   echo "  copy            → wl-copy (clipboard Wayland)"
   echo "  zshrc           → buka file .zshrc di editor"
+  echo "  duf /home       → berapa gb pemakaian"
+  echo "  dua i /home/    → interactive kapasitas folder"
   
   echo "  win11           → boot ke windows 11"
   
@@ -365,6 +373,7 @@ my-alias() {
   echo ""
   echo "📦 SISTEM & SNAPSHOT"
   echo "  syu             → snapshot snapper dulu, lalu pacman -Syu"
+  echo "  aur-syu         → snapshot dulu lalu aur (yay, paru) update"
   echo "  snap [desc]     → buat snapshot manual (default: 'manual snapshot')"
 
   echo ""
