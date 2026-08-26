@@ -11,3 +11,15 @@ window-rule {
     match app-id="^Picture in picture$"
     open-floating true
 }
+
+// @id=wr_1787677552344232452 @name=brave-origin
+window-rule {
+    match app-id="brave-origin"
+    open-maximized true
+}
+
+// @id=wr_1787700474287682032 @name=vlc full screen
+window-rule {
+    match app-id="flatpak run org.videolan.VLC"
+    open-maximized true
+}
