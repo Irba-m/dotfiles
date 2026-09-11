@@ -658,11 +658,18 @@
       "centerWidgets": [
         {
           "id": "focusedWindow",
-          "enabled": true,
+          "enabled": false,
           "focusedWindowCompactMode": false
         }
       ],
       "rightWidgets": [
+        {
+          "id": "focusedWindow",
+          "enabled": true,
+          "focusedWindowSize": 0,
+          "focusedWindowCompactMode": false,
+          "focusedWindowShowIcon": true
+        },
         {
           "id": "weather",
           "enabled": true
