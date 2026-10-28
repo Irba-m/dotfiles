@@ -338,8 +338,8 @@ my-alias() {
   echo "🐳 DOCKER"
   echo "  d               → docker"
   echo "  dc              → docker compose"
-  echo "  dcu             → docker compose up -d"
-  echo "  dcd             → docker compose down"
+  echo "  dcu             → docker compose start -d"
+  echo "  dcd             → docker compose stop"
   echo "  dcl             → docker compose logs -f"
   echo "  dps             → docker ps"
 

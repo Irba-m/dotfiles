@@ -1,0 +1,25 @@
+{
+  "lockfileVersion": 1,
+  "plugins": {
+    "dankDiskUsage": {
+      "repo": "https://github.com/alcxyz/DankDiskUsage",
+      "commit": "2408794ddf6cbaaff8030266227fe98f05decf28"
+    },
+    "displayManager": {
+      "repo": "https://github.com/felri/display-manager-plugin-niri-dank-linux",
+      "commit": "7dd33c6c7c3f2962af14a735e86f92c44f73ea0c"
+    },
+    "dockerManager": {
+      "repo": "https://github.com/LuckShiba/DmsDockerManager",
+      "commit": "9e6a01283e169c46eff7a157202b1b8ab48577b1"
+    },
+    "timeUntil": {
+      "repo": "https://github.com/fdmarcin/TimeUntil",
+      "commit": "857720e02b688e46c207e1f37c0c53b2cdf5a940"
+    },
+    "warpToggle": {
+      "repo": "https://github.com/ahmed-mekky/dms-warp-toggle",
+      "commit": "3bee1e952c626071167c4e0aedad6241f7f624e0"
+    }
+  }
+}

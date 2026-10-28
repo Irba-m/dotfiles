@@ -1,4 +1,4 @@
-// DMS Window Rules - Managed by DankMaterialShell
+// DMS Window Rules - Managed by Dux Shell
 // Do not edit manually - changes may be overwritten
 
 // @id=wr_1776562783461337442 @name=Nautilus Not Floating
@@ -22,4 +22,16 @@ window-rule {
 window-rule {
     match app-id="flatpak run org.videolan.VLC"
     open-maximized true
+}
+
+// @id=dms-floating-windows @name=DMS Floating Windows
+window-rule {
+    match app-id="^(dev\\.duxlabs\\.shell|com\\.danklinux\\.dms)$"
+    open-floating true
+}
+
+// @id=dms-window-opaque @name=DMS Window Opaque
+window-rule {
+    match app-id="^(dev\\.duxlabs\\.shell|com\\.danklinux\\.dms)$"
+    opacity 1.00
 }

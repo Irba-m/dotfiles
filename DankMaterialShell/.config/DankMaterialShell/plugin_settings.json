@@ -10,5 +10,17 @@
     "enabled": false,
     "brightness_HDMI-A-1": 80.6017645474138,
     "contrast_HDMI-A-1": 60.43069773706896
+  },
+  "warpToggle": {
+    "enabled": true
+  },
+  "dockerManager": {
+    "enabled": true,
+    "groupByCompose": true
+  },
+  "timeUntil": {
+    "enabled": false,
+    "targetTimestamp": "2026-10-01 17:00",
+    "label": "until paid day"
   }
 }
